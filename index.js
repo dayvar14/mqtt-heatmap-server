@@ -38,4 +38,4 @@ async function run() {
   console.log(result);
 }
 
-run().catch(err => console.error(err))
+run().catch(err => run())
