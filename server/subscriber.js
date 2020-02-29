@@ -6,10 +6,11 @@ const topic = process.env.COORDINATES_SUBSCRIBE_TOPIC || 'testing/meetup/user';
 const mongoose = require('mongoose');
 const Coordinates = require('../schemas/coordinates');
 const query = require('../lib/query');
-
+var options = { server: { useNewUrlParser: true , useCreateIndex: true,  useUnifiedTopology: true,socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
+replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
 
 //Connects to Heatmap Database
-mongoose.connect(process.env.DB_HOST, { useNewUrlParser: true , useCreateIndex: true,  useUnifiedTopology: true})
+mongoose.connect(process.env.DB_HOST, options)
 .then(() => console.log('Connected to MongoDB...'))
 .catch(err => console.error('Could not connect to MongoDB...', err));
 
