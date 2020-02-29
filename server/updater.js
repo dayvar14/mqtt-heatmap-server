@@ -7,16 +7,16 @@ const delay = require('../lib/delay');
 
 //Updates Heatmap with coordinates from the Coordinates Table then writes the coordinates
 //to a csv file
-updateDelay = process.env.COORDINATES_UPDATE_DELAY
-
+const updateDelay = Number(process.env.COORDINATES_UPDATE_DELAY) || 10000
+const uri = process.env.DB_HOST
 async function updateHeatMap() {
 
     let startTime = process.hrtime()
 
     //Connects to HeatMap Database
-    mongoose.connect(process.env.DB_HOST, { useNewUrlParser: true })
-        .then(() => console.log('Connected to MongoDB...'))
-        .catch(err => console.error('Could not connect to MongoDB...', err));
+    mongoose.connect(uri, { useNewUrlParser: true , useCreateIndex: true,  useUnifiedTopology: true })
+        .then(() => console.log('Updater connected to MongoDB...'))
+        .catch(err => console.error('Updater could not connect to MongoDB...', err));
 
     array = [];
     try {
@@ -36,7 +36,7 @@ async function updateHeatMap() {
 
         //Writes coordinates to file
        const jsonContent = JSON.stringify(coordinateArray,null, ' ');
-       console.log(jsonContent)
+
        JSONToFile(jsonContent, "server/coordinates.json")
 
     }

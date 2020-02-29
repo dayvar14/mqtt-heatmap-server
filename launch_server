@@ -1,3 +1,0 @@
-#!/bin/bash
-node server/server.js &
-node server/updater.js

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+###MongoDB database
+DB_HOST=
+
+#How precise coordinates are stored within the database
+COORDINATES_LAT_PRECISION=6
+COORDINATES_LNG_PRECISION=6
+
+###MQTT
+MQTT_BROKER_HOST=mqtt://mqtt.eclipse.org
+MQTT_BROKER_PORT=1833
+COORDINATES_PUBLISH_TOPIC=testing/meetup/coordinates
+COORDINATES_SUBSCRIBE_TOPIC=testing/meetup/user
+#How often coordinates are published onto database
+COORDINATES_PUBLISH_DELAY=5000
+COORDINATES_UPDATE_DELAY=5000
