@@ -12,7 +12,7 @@ const uri = process.env.DB_HOST
 async function updateHeatMap() {
 
     let startTime = process.hrtime()
-    var options = { server: { useNewUrlParser: true , useCreateIndex: true,  useUnifiedTopology: true,socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
+    var options = { useNewUrlParser: true , useCreateIndex: true,  useUnifiedTopology: true, server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
     replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
     //Connects to HeatMap Database
     mongoose.connect(uri, options)

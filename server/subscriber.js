@@ -6,7 +6,7 @@ const topic = process.env.COORDINATES_SUBSCRIBE_TOPIC || 'testing/meetup/user';
 const mongoose = require('mongoose');
 const Coordinates = require('../schemas/coordinates');
 const query = require('../lib/query');
-var options = { server: { useNewUrlParser: true , useCreateIndex: true,  useUnifiedTopology: true,socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
+var options = { useNewUrlParser: true , useCreateIndex: true,  useUnifiedTopology: true, server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
 replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
 
 //Connects to Heatmap Database
