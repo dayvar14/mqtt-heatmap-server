@@ -35,12 +35,6 @@ function runService(workerData) {
 
 async function run() {
   const result = await runService('world')
-    // production
-  config.port = process.env.PORT
-
-  app.listen(config.port, () => {
-    logger.info('Listening on port %d', config.port);
-  });
   console.log(result);
 }
 
