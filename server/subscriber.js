@@ -23,8 +23,13 @@ async function init() {
     
       client.on('message', function (topic, payload) {
         // message is Buffer
+        try{
         const coordinate = JSON.parse(payload.toString());
         query.upsert(Coordinates, {username: coordinate.username}, {lat: coordinate.lat, lng:coordinate.lng, lastUpdate: new Date})
+        }
+        catch(err){
+          console.log("Failed to add " + payload.toString());
+        }
      });
 
 }
