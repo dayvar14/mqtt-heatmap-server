@@ -12,7 +12,7 @@ console.log(process.env.MQTT_BROKER_HOST)
 async function init() {
     while (true) {
       for(var i = 0; i < usernames.length;i++){
-        client.publish(topic,'{username: dayvar, lat:"23",lng:"23"}');
+        client.publish(topic,'{"username": "dayvar", "lat":"23","lng":"23"}');
       }
         
         await sleep(delay);
