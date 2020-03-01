@@ -2,7 +2,8 @@
   "name": "neiu-meetup",
   "version": "0.3.0",
   "engines":{
-    "node": "12.16.1"
+    "node": "12.16.1",
+    "npm":"6.13.4"
   },
   "description": "",
   "main": "index.js",
