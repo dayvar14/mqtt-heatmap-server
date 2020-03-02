@@ -2,8 +2,8 @@ require('dotenv').config();
 
 const fs = require('fs');
 const mqtt = require('mqtt');
-const client = mqtt.connect(process.env.MQTT_BROKER_HOST || 'mqtt://test.mosquitto.org',{port:1883});
-const topic = process.env.COORDINATES_PUBLSIH_TOPIC || 'testing/meetup/user';
+const client = mqtt.connect(process.env.MQTT_BROKER_HOST || 'localhost',{port:1883});
+const topic = process.env.COORDINATES_SUBSCRIBE_TOPIC;
 const delay = process.env.COORDINATES_PUBLISH_DELAY || 2000;
 
 

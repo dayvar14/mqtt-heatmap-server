@@ -10,7 +10,7 @@
   "scripts": {
     "start":"node index.js"
   },
-  "author": "",
+  "author": "dayvar",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.2.0",

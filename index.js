@@ -1,12 +1,14 @@
 require('dotenv').config();
 
-// index.js
-// run with node --experimental-worker index.js on Node.js 10.x
 const { Worker } = require('worker_threads')
 
-function runService(workerData) {
+
+//Starts three Workers Publisher, Subscriber, Updater
+function startWorkers() {
   return new Promise((resolve, reject) => {
-    const subscriber = new Worker('./server/subscriber.js', { workerData });
+
+    //MQTT Subscriber that updates database with incoming coordinates
+    const subscriber = new Worker('./server/subscriber.js');
     console.log("Starting subscriber...")
     subscriber.on('message', resolve);
     subscriber.on('error', reject);
@@ -14,7 +16,9 @@ function runService(workerData) {
       if (code !== 0)
         reject(new Error(`Worker stopped with exit code ${code}`));
     })
-    const publisher = new Worker('./server/publisher.js', { workerData });
+
+    //MQTT Publisher that publishes heatmap coordinate information
+    const publisher = new Worker('./server/publisher.js');
     console.log("Starting publisher...")
     publisher.on('message', resolve);
     publisher.on('error', reject);
@@ -22,7 +26,9 @@ function runService(workerData) {
       if (code !== 0)
         reject(new Error(`Worker stopped with exit code ${code}`));
     })
-    const updater = new Worker('./server/updater.js', { workerData });
+
+    //Updater that updates server/coordindates.json file with new coordinates
+    const updater = new Worker('./server/updater.js');
     console.log("Starting updater...")
     updater.on('message', resolve);
     updater.on('error', reject);
@@ -30,12 +36,14 @@ function runService(workerData) {
       if (code !== 0)
         reject(new Error(`Worker stopped with exit code ${code}`));
     })
+
   })
 }
 
-async function run() {
-  const result = await runService('world')
+
+async function start() {
+  const result = await startWorkers()
   console.log(result);
 }
 
-run().catch(err => console.log(err))
+start().catch(err => console.log(err))

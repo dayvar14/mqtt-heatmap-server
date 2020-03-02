@@ -2,41 +2,41 @@ require('dotenv').config();
 
 const fs = require('fs');
 const mongoose = require('mongoose');
+
 const Coordinates = require('../schemas/coordinates');
 const delay = require('../lib/delay');
 
-//Updates Heatmap with coordinates from the Coordinates Table then writes the coordinates
-//to a csv file
-const updateDelay = Number(process.env.COORDINATES_UPDATE_DELAY) || 10000
-const uri = process.env.DB_HOST
+const env = process.env.NODE_ENV;
+
+const updateDelay = Number(process.env.COORDINATES_UPDATE_DELAY) || 10000;
+
+var mongoDBOptions = { useNewUrlParser: true , useCreateIndex: true,  useUnifiedTopology: true};
+const mongoDBUri = process.env.DB_HOST;
+
 async function updateHeatMap() {
 
-    let startTime = process.hrtime()
-    var options = { useNewUrlParser: true , useCreateIndex: true,  useUnifiedTopology: true}
-    //Connects to HeatMap Database
-    mongoose.connect(uri, options)
+    let startTime = process.hrtime();
+
+    mongoose.connect(mongoDBUri, mongoDBOptions)
         .then(() => console.log('Updater connected to MongoDB...'))
         .catch(err => console.error('Updater could not connect to MongoDB...', err));
 
-    array = [];
     try {
 
-        //From the Coordinates Table, result recieves the coordinates and 
-        //stores the amount of duplicate coordinates in sum
+        //Recieves the amount of distinct coordaintes along with their count from MongoDB database
         const result = await Coordinates.aggregate([
             { "$group": { "_id": { lat: "$lat", lng: "$lng" }, "count": { "$sum": 1 } } }
         ]);
 
         
-
-        coordinateArray = [];
+        //Stores result in a array
+        let coordinateArray = [];
         for (key in result) {
             coordinateArray.push({lat: result[key]._id.lat,lng: result[key]._id.lng, count: result[key].count});
         }
 
-        //Writes coordinates to file
+        //Writes coordinate information from MongoDB database to server/coordinates.json
        const jsonContent = JSON.stringify(coordinateArray,null, ' ');
-
        JSONToFile(jsonContent, "server/coordinates.json")
 
     }
@@ -45,10 +45,11 @@ async function updateHeatMap() {
     }
 
     let endTime = process.hrtime(startTime)
-    console.log("Updated Heatmap in "+ endTime[1]/ 1000000 +"ms");
     mongoose.disconnect();
+
+    console.log("Updater updated server/coordinates.json in "+ endTime[1]/ 1000000 +"ms");
 }
-//Writes an array to a specified file
+//Writes an JSON Array to a specified file
 function JSONToFile(jsonContent, path)
 {
     fs.writeFile(path, jsonContent, 'utf8', function (err) {
@@ -56,12 +57,10 @@ function JSONToFile(jsonContent, path)
             console.log("An error occured while writing JSON Object to File.");
             return console.log(err);
         }
-     
-        console.log("JSON file has been saved.");
     }); 
 }
 
-async function run()
+async function start()
 {
     try
     {
@@ -77,4 +76,4 @@ async function run()
     }
 }
 
-run();
+start();
