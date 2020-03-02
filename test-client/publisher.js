@@ -12,13 +12,16 @@ console.log(process.env.MQTT_BROKER_HOST)
 async function init() {
     while (true) {
       for(var i = 0; i < usernames.length;i++){
-        client.publish(topic,'{"username": "dayvar", "lat":"23","lng":"23"}');
+        client.publish(topic,'{"id": "dayvar", "lat":"41.982887","lng":"-87.720914"}');
       }
         
         await sleep(delay);
         console.log("Published coordinates on " + topic + "...")
     }
 }
+
+console.log(process.env.MIN_COORDINATES_LAT);
+console.log(process.env.MAX_COORDINATES_LAT);
 
 function sleep(ms) {
   return new Promise((resolve) => {

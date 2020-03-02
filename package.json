@@ -1,6 +1,6 @@
 {
   "name": "neiu-meetup",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "engines":{
     "node": "12.16.1",
     "npm":"6.13.4"
