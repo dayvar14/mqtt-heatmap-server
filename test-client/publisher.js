@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const fs = require('fs');
 const mqtt = require('mqtt');
-const client = mqtt.connect(process.env.MQTT_BROKER_HOST || 'localhost',{port:1883});
+const mqttClient = mqtt.connect(process.env.MQTT_BROKER_HOST || 'localhost',{port:1883});
 const topic = process.env.COORDINATES_SUBSCRIBE_TOPIC;
 const delay = process.env.COORDINATES_PUBLISH_DELAY || 2000;
 
@@ -12,7 +12,7 @@ console.log(process.env.MQTT_BROKER_HOST)
 async function init() {
     while (true) {
       for(var i = 0; i < usernames.length;i++){
-        client.publish(topic,'{"id": "dayvar", "lat":"41.98288","lng":"-87.72090"}');
+        mqttClient.publish(topic,'{"id": "dayvar", "lat":"41.98288","lng":"-87.72090"}');
       }
         
         await sleep(delay);

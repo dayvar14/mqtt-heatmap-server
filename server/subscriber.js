@@ -16,26 +16,24 @@ var mongoDBOptions = { useNewUrlParser: true , useCreateIndex: true,  useUnified
 const mongoDBUri = process.env.DB_HOST;
 
 async function start() {
+    mongoose.connect(mongoDBUri, mongoDBOptions)
+    .then(() => console.log('Subscriber connected to MongoDB...'))
+    .catch(err => console.error('Subscriber could not connect to MongoDB...', err));
 
     //Listens for coordinates being published on the subscribe topic
       mqttClient.on('connect', function () {
-        client.subscribe(subscribeTopic, function (err) {
+        mqttClient.subscribe(subscribeTopic, function (err) {
           console.log("Subscriber failed to subscribe...")
         })
       })
     
       //Once messge is recieved client sends information to the MongoDB database
-      mqttClient.on('message', function (topic, payload) {
+      mqttClient.on('message', function (subscribeTopic, payload) {
         try{
 
-          mongoose.connect(mongoDBUri, mongoDBOptions)
-            .then(() => console.log('Subscriber connected to MongoDB...'))
-            .catch(err => console.error('Subscriber could not connect to MongoDB...', err));
-
           const coordinate = JSON.parse(payload.toString());
-          query.upsert(Coordinates, {id: coordinate.id}, {lat: coordinate.lat, lng:coordinate.lng, lastUpdate: new Date})
-          
-          mongoose.disconnect()
+                    query.upsert(Coordinates, {id: coordinate.id}, {lat: coordinate.lat, lng:coordinate.lng, lastUpdate: new Date}).catch(err => console.error('Invalid Data..'))
+
         }
         catch(err){
           console.log("Failed to add " + payload.toString());
