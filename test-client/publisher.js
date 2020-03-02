@@ -12,14 +12,15 @@ console.log(process.env.MQTT_BROKER_HOST)
 async function init() {
     while (true) {
       for(var i = 0; i < usernames.length;i++){
-        client.publish(topic,'{"id": "dayvar", "lat":"41.982887","lng":"-87.720914"}');
+        client.publish(topic,'{"id": "dayvar", "lat":"41.98288","lng":"-87.72090"}');
       }
         
         await sleep(delay);
         console.log("Published coordinates on " + topic + "...")
     }
 }
-
+console.log(Number.parseFloat("41.982887").toFixed(process.env.COORDINATES_LAT_PRECISION))
+console.log(Number.parseFloat("-87.720914").toFixed(process.env.COORDINATES_LAT_PRECISION))
 console.log(process.env.MIN_COORDINATES_LAT);
 console.log(process.env.MAX_COORDINATES_LAT);
 
